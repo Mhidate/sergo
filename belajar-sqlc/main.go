@@ -1,39 +1,29 @@
 package main
 
 import (
-	"database/sql"
+	"context"
 	"fmt"
 	"log"
 	"os"
 
+	"github.com/jackc/pgx/v5"
 	"github.com/joho/godotenv"
-	_ "github.com/lib/pq"
 )
 
 func main() {
+
+	fmt.Println("Belajar menggunakan sql dan goose")
 
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
 
-	fmt.Println("Belajar menggunakan sql dan goose")
-	connStr := os.Getenv("DATABASE_URL")
-	fmt.Println(connStr)
-	if connStr == "" {
-		fmt.Errorf("DATABASE_URL tidak ditemukan dalam environment variable")
-	}
-
-	db, err := sql.Open("postgres", connStr)
+	conn, err := pgx.Connect(context.Background(), os.Getenv("DATABASE_URL"))
 	if err != nil {
-		fmt.Errorf("gagal membuka koneksi database: %v", err)
+		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
+		os.Exit(1)
 	}
-
-	// Coba koneksi ke database
-	if err := db.Ping(); err != nil {
-		fmt.Errorf("gagal koneksi ke database: %v", err)
-	} else {
-		fmt.Println("koneksi ke database berhasil")
-	}
+	defer conn.Close(context.Background())
 
 }
