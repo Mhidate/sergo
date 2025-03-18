@@ -1,3 +1,3 @@
 # sergo
 
-- untuk belajar berbagai library
+- untuk belajar berbagai librarygit
