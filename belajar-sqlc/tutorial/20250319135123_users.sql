@@ -1,9 +1,13 @@
 -- +goose Up
 -- +goose StatementBegin
-SELECT 'up SQL query';
+CREATE TABLE users (
+  id   BIGSERIAL PRIMARY KEY,
+  name text      NOT NULL,
+  bio  text
+);
 -- +goose StatementEnd
 
 -- +goose Down
 -- +goose StatementBegin
-SELECT 'down SQL query';
+DROP TABLE users;
 -- +goose StatementEnd
